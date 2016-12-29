@@ -30,10 +30,16 @@ if (empty($_SESSION)) {
                         <li><a href="?page=home">Beranda <span class="sr-only">(current)</span></a></li>
                         <?php if ($_SESSION["as"] == "puket"): ?>
                           <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="?page=beasiswa">Data Beasiswa</a></li>
+                            </ul>
+                          </li>
+                          <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laporan <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                              <li><a href="?page=pengumuman">Pengumuman</a></li>
-                              <li><a href="?page=pendaftaran">Pendaftaran</a></li>
+                              <li><a href="?page=lap_pengumuman">Pengumuman</a></li>
+                              <li><a href="?page=lap_pendaftaran">Pendaftaran</a></li>
                             </ul>
                           </li>
                         <?php elseif ($_SESSION["as"] == "petugas"): ?>
@@ -41,7 +47,11 @@ if (empty($_SESSION)) {
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                               <li><a href="?page=mahasiswa">Data Mahasiswa</a></li>
-                              <li><a href="?page=persyaratan">Persyaratan Mahasiswa</a></li>
+                              <li class="divider"></li>
+                              <li><a href="?page=kriteria">Kriteria</a></li>
+                              <li><a href="?page=model">Model</a></li>
+                              <li><a href="?page=nilai">Nilai</a></li>
+                              <li><a href="?page=penilaian">Penilaian</a></li>
                             </ul>
                           </li>
                         <?php elseif ($_SESSION["as"] == "mahasiswa"): ?>
@@ -49,7 +59,7 @@ if (empty($_SESSION)) {
                         <?php endif; ?>
                         <li><a href="logout.php">Logout</a></li>
                         <li><a href="#">|</a></li>
-                        <li><a href="#" style="color: red; font-weight: bold;"><?= $_SESSION["username"] ?></a></li>
+                        <li><a href="#" style="color: red; font-weight: bold;"><?= ucfirst($_SESSION["username"]) ?></a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
