@@ -28,14 +28,34 @@ if (empty($_SESSION)) {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="?page=home">Beranda <span class="sr-only">(current)</span></a></li>
+                        <?php if ($_SESSION["as"] == "puket"): ?>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laporan <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="?page=pengumuman">Pengumuman</a></li>
+                              <li><a href="?page=pendaftaran">Pendaftaran</a></li>
+                            </ul>
+                          </li>
+                        <?php elseif ($_SESSION["as"] == "petugas"): ?>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="?page=data">Data Mahasiswa</a></li>
+                              <li><a href="?page=persyaratan">Persyaratan Mahasiswa</a></li>
+                            </ul>
+                          </li>
+                        <?php elseif ($_SESSION["as"] == "mahasiswa"): ?>
+                          <li><a href="?page=pengumuman">Pengumuman</a></li>
+                        <?php endif; ?>
                         <li><a href="logout.php">Logout</a></li>
+                        <li><a href="#">|</a></li>
                         <li><a href="#" style="color: red; font-weight: bold;"><?= $_SESSION["username"] ?></a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
               <?php include page($_PAGE); ?>
             </div>
         </div>
