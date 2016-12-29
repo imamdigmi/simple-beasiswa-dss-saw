@@ -30,7 +30,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
 	                <div class="form-group">
-	                    <label for="kd_kriteria">KODE</label>
+	                    <label for="kd_kriteria">Kode</label>
 	                    <input type="text" name="kd_kriteria" class="form-control" <?= (!$update) ?: 'value="'.$row["kd_kriteria"].'" disabled="on"' ?>>
 	                </div>
 	                <div class="form-group">
