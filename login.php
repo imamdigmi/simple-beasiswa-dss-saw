@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="panel-body">
                         <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
                             <div class="form-group">
-                                <label for="username">Email</label>
+                                <label for="username">Username</label>
                                 <input type="text" name="username" class="form-control" id="username" placeholder="Email" autofocus="on">
                             </div>
                             <div class="form-group">
