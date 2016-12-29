@@ -42,10 +42,11 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                    <input type="text" name="alamat" class="form-control" <?= (!$update) ?: 'value="'.$row["alamat"].'"' ?>>
 	                </div>
 									<div class="form-group">
+	                  <label for="jenis_kelamin">Jenis Kelamin</label>
 										<select class="form-control" name="jenis_kelamin">
 											<option>---</option>
-											<option value="L" <?= (!$update) ?: (($row["jenis_kelamin"] != "L") ?: 'selected="on"') ?>>Laki-laki</option>
-											<option value="P" <?= (!$update) ?: (($row["jenis_kelamin"] != "P") ?: 'selected="on"') ?>>Perempuan</option>
+											<option value="Laki-laki" <?= (!$update) ?: (($row["jenis_kelamin"] != "Laki-laki") ?: 'selected="on"') ?>>Laki-laki</option>
+											<option value="Perempuan" <?= (!$update) ?: (($row["jenis_kelamin"] != "Perempuan") ?: 'selected="on"') ?>>Perempuan</option>
 										</select>
 									</div>
 	                <button type="submit" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
