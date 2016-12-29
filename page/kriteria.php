@@ -38,7 +38,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                    <input type="text" name="nama" class="form-control" <?= (!$update) ?: 'value="'.$row["nama"].'"' ?>>
 	                </div>
 									<div class="form-group">
-	                  <label for="nama">Sifat</label>
+	                  <label for="sifat">Sifat</label>
 										<select class="form-control" name="sifat">
 											<option>---</option>
 											<option value="min" <?= (!$update) ?: (($row["sifat"] != "min") ?: 'selected="on"') ?>>Min</option>
