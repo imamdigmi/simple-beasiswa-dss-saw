@@ -24,3 +24,13 @@ if (isset($_GET["page"])) {
 function page($page) {
   return "page/" . $page . ".php";
 }
+
+/**
+ * Alert notification
+ * @param message, redirection
+ * @return alert notify
+ */
+function alert($msg, $to = null) {
+  $to = ($to) ? $to : $_SERVER["PHP_SELF"];
+  return "<script>alert('{$msg}');window.location='{$to}';</script>";
+}

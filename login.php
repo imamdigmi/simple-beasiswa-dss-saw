@@ -1,16 +1,17 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once "config.php";
-    $sql = "SELECT * FROM pelanggan WHERE email='$_POST[email]' AND password='" . md5($_POST['password']) . "'";
-    if ($query = $koneksi->query($sql)) {
+    $sql = "SELECT * FROM pengguna WHERE username='$_POST[username]' AND password='" . md5($_POST['password']) . "'";
+    if ($query = $connection->query($sql)) {
         if ($query->num_rows) {
             session_start();
             while ($data = $query->fetch_array()) {
-                $_SESSION['is_pelanggan'] = true;
+                $_SESSION["as"] = $data["status"];
+                $_SESSION["username"] = $data["username"];
               }
             header('location: index.php');
         } else {
-            echo "Email / Password tidak sesuai!";
+            echo alert("Username / Password tidak sesuai!", "login.php");
         }
     } else {
         echo "Query error!";
@@ -40,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="panel-body">
                         <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="Email" autofocus="on">
+                                <label for="username">Email</label>
+                                <input type="text" name="username" class="form-control" id="username" placeholder="Email" autofocus="on">
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>

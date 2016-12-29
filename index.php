@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once "config.php";
-// if (empty($_SESSION)) {
-//   header('location: login.php');
-// }
+if (empty($_SESSION)) {
+  header('location: login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +28,8 @@ require_once "config.php";
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="?page=home">Beranda <span class="sr-only">(current)</span></a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                        <li><a href="#" style="color: red; font-weight: bold;"><?= $_SESSION["username"] ?></a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
