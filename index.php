@@ -40,7 +40,7 @@ if (empty($_SESSION)) {
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                              <li><a href="?page=data">Data Mahasiswa</a></li>
+                              <li><a href="?page=mahasiswa">Data Mahasiswa</a></li>
                               <li><a href="?page=persyaratan">Persyaratan Mahasiswa</a></li>
                             </ul>
                           </li>
