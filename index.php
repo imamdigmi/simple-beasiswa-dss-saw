@@ -33,6 +33,10 @@ if (empty($_SESSION)) {
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                               <li><a href="?page=beasiswa">Data Beasiswa</a></li>
+                              <li class="divider"></li>
+                              <li><a href="?page=kriteria">Kriteria</a></li>
+                              <li><a href="?page=model">Model</a></li>
+                              <li><a href="?page=penilaian">Penilaian</a></li>
                             </ul>
                           </li>
                           <li class="dropdown">
@@ -47,11 +51,7 @@ if (empty($_SESSION)) {
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                               <li><a href="?page=mahasiswa">Data Mahasiswa</a></li>
-                              <li class="divider"></li>
-                              <li><a href="?page=kriteria">Kriteria</a></li>
-                              <li><a href="?page=model">Model</a></li>
-                              <li><a href="?page=nilai">Nilai</a></li>
-                              <li><a href="?page=penilaian">Penilaian</a></li>
+                              <li><a href="?page=nilai">Persyaratan</a></li>
                             </ul>
                           </li>
                         <?php elseif ($_SESSION["as"] == "mahasiswa"): ?>
