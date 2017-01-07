@@ -12,6 +12,7 @@ if (empty($_SESSION)) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Beasiswa</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="assets/js/jquery.min.js"></script>
     <style>
         body {
             margin-top: 40px;
@@ -81,7 +82,6 @@ if (empty($_SESSION)) {
             </div>
         </div>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 </body>
 </html>
