@@ -40,22 +40,22 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 										</select>
 									</div>
 									<div class="form-group">
-	                  <label for="kd_kriteria">Kriteria</label>
-										<select class="form-control" name="kd_kriteria">
-											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ?: (($row["kd_kriteria"] != $data["kd_kriteria"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
-											<?php endwhile; ?>
-										</select>
-									</div>
-									<div class="form-group">
 	                  <label for="nim">Mahasiswa</label>
 										<select class="form-control" name="nim">
 											<option>---</option>
 											<?php $sql = $connection->query("SELECT * FROM mahasiswa") ?>
 											<?php while ($data = $sql->fetch_assoc()): ?>
 												<option value="<?=$data["nim"]?>" <?= (!$update) ?: (($row["nim"] != $data["nim"]) ?: 'selected="on"') ?>><?=$data["nim"]?> | <?=$data["nama"]?></option>
+											<?php endwhile; ?>
+										</select>
+									</div>
+									<div class="form-group">
+	                  <label for="kd_kriteria">Kriteria</label>
+										<select class="form-control" name="kd_kriteria">
+											<option>---</option>
+											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
+											<?php while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ?: (($row["kd_kriteria"] != $data["kd_kriteria"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
 											<?php endwhile; ?>
 										</select>
 									</div>
