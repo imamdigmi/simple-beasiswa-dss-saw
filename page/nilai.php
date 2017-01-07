@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($update) {
 		$sql = "UPDATE nilai SET kd_kriteria='$_POST[kd_kriteria]', nim='$_POST[nim]', nilai='$_POST[nilai]' WHERE kd_nilai='$_GET[key]'";
 	} else {
-		$sql = "INSERT INTO nilai VALUES ('$_POST[kd_nilai]', '$_POST[kd_kriteria]', '$_POST[nim]', '$_POST[nilai]')";
+		$sql = "INSERT INTO nilai VALUES (NULL, '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[nim]', '$_POST[nilai]')";
 	}
   if ($connection->query($sql)) {
     echo alert("Berhasil!", "?page=nilai");
@@ -29,10 +29,16 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-heading"><h3 class="text-center"><?= ($update) ? "EDIT" : "TAMBAH" ?></h3></div>
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
-	                <div class="form-group">
-	                    <label for="kd_nilai">Kode</label>
-	                    <input type="text" name="kd_nilai" class="form-control" <?= (!$update) ?: 'value="'.$row["kd_nilai"].'" disabled="on"' ?>>
-	                </div>
+									<div class="form-group">
+	                  <label for="kd_beasiswa">Beasiswa</label>
+										<select class="form-control" name="kd_beasiswa">
+											<option>---</option>
+											<?php $sql = $connection->query("SELECT * FROM beasiswa") ?>
+											<?php while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_beasiswa"]?>" <?= (!$update) ?: (($row["kd_beasiswa"] != $data["kd_beasiswa"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php endwhile; ?>
+										</select>
+									</div>
 									<div class="form-group">
 	                  <label for="kd_kriteria">Kriteria</label>
 										<select class="form-control" name="kd_kriteria">
@@ -54,8 +60,14 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 										</select>
 									</div>
 	                <div class="form-group">
-	                    <label for="nilai">Nilai</label>
-	                    <input type="text" name="nilai" class="form-control" <?= (!$update) ?: 'value="'.$row["nilai"].'"' ?>>
+		                  <label for="nilai">Nilai</label>
+											<select class="form-control" name="nilai">
+												<option>---</option>
+												<?php $sql = $connection->query("SELECT * FROM penilaian") ?>
+												<?php while ($data = $sql->fetch_assoc()): ?>
+													<option value="<?=$data["bobot"]?>" <?= (!$update) ?: (($row["bobot"] != $data["bobot"]) ?: 'selected="on"') ?>><?=$data["keterangan"]?></option>
+												<?php endwhile; ?>
+											</select>
 	                </div>
 	                <button type="submit" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
 	                <?php if ($update): ?>
@@ -82,13 +94,14 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                </thead>
 	                <tbody>
 	                    <?php $no = 1; ?>
-	                    <?php if ($query = $connection->query("SELECT * FROM nilai")): ?>
+	                    <?php if ($query = $connection->query("SELECT c.nama AS nama_beasiswa, b.nama AS nama_kriteria, d.nim, d.nama AS nama_mahasiswa, a.nilai FROM nilai a JOIN kriteria b ON a.kd_kriteria=b.kd_kriteria JOIN beasiswa c ON a.kd_beasiswa=c.kd_beasiswa JOIN mahasiswa d ON d.nim=a.nim")): ?>
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
-	                            <td><?=$row['kd_nilai']?></td>
-	                            <td><?=$row['kd_kriteria']?></td>
+	                            <td><?=$row['nama_beasiswa']?></td>
+	                            <td><?=$row['nama_kriteria']?></td>
 	                            <td><?=$row['nim']?></td>
+	                            <td><?=$row['nama_mahasiswa']?></td>
 	                            <td><?=$row['nilai']?></td>
 	                            <td>
 	                                <div class="btn-group">

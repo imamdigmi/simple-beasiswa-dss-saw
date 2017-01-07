@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($update) {
 		$sql = "UPDATE beasiswa SET nama='$_POST[nama]' WHERE kd_beasiswa='$_GET[key]'";
 	} else {
-		$sql = "INSERT INTO beasiswa VALUES ('$_POST[kd_beasiswa]', '$_POST[nama]')";
+		$sql = "INSERT INTO beasiswa VALUES (NULL, '$_POST[nama]')";
 	}
   if ($connection->query($sql)) {
     echo alert("Berhasil!", "?page=beasiswa");
@@ -30,10 +30,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
 	                <div class="form-group">
-	                    <label for="kd_beasiswa">Kode</label>
-	                    <input type="text" name="kd_beasiswa" class="form-control" <?= (!$update) ?: 'value="'.$row["kd_beasiswa"].'" disabled="on"' ?>>
-	                </div>
-	                <div class="form-group">
 	                    <label for="nama">Nama</label>
 	                    <input type="text" name="nama" class="form-control" <?= (!$update) ?: 'value="'.$row["nama"].'"' ?>>
 	                </div>
@@ -53,7 +49,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                <thead>
 	                    <tr>
 	                        <th>No</th>
-	                        <th>Kode</th>
 	                        <th>Nama</th>
 	                        <th></th>
 	                    </tr>
@@ -64,7 +59,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
-	                            <td><?=$row['kd_beasiswa']?></td>
 	                            <td><?=$row['nama']?></td>
 	                            <td>
 	                                <div class="btn-group">

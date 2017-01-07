@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($update) {
 		$sql = "UPDATE kriteria SET nama='$_POST[nama]', sifat='$_POST[sifat]' WHERE kd_kriteria='$_GET[key]'";
 	} else {
-		$sql = "INSERT INTO kriteria VALUES ('$_POST[kd_kriteria]', '$_POST[nama]', '$_POST[sifat]')";
+		$sql = "INSERT INTO kriteria VALUES (NULL, '$_POST[nama]', '$_POST[sifat]')";
 	}
   if ($connection->query($sql)) {
     echo alert("Berhasil!", "?page=kriteria");
@@ -29,10 +29,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-heading"><h3 class="text-center"><?= ($update) ? "EDIT" : "TAMBAH" ?></h3></div>
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
-	                <div class="form-group">
-	                    <label for="kd_kriteria">Kode</label>
-	                    <input type="text" name="kd_kriteria" class="form-control" <?= (!$update) ?: 'value="'.$row["kd_kriteria"].'" disabled="on"' ?>>
-	                </div>
 	                <div class="form-group">
 	                    <label for="nama">Nama</label>
 	                    <input type="text" name="nama" class="form-control" <?= (!$update) ?: 'value="'.$row["nama"].'"' ?>>
@@ -61,7 +57,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                <thead>
 	                    <tr>
 	                        <th>No</th>
-	                        <th>Kode</th>
 	                        <th>Nama</th>
 	                        <th>Sifat</th>
 	                        <th></th>
@@ -73,7 +68,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
-	                            <td><?=$row['kd_kriteria']?></td>
 	                            <td><?=$row['nama']?></td>
 	                            <td><?=$row['sifat']?></td>
 	                            <td>

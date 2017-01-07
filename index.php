@@ -28,6 +28,7 @@ if (empty($_SESSION)) {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="?page=home">Beranda <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#" style="font-weight: bold; color: green;">Perhitungan</a></li>
                         <?php if ($_SESSION["as"] == "puket"): ?>
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
@@ -59,7 +60,7 @@ if (empty($_SESSION)) {
                         <?php endif; ?>
                         <li><a href="logout.php">Logout</a></li>
                         <li><a href="#">|</a></li>
-                        <li><a href="#" style="color: red; font-weight: bold;"><?= ucfirst($_SESSION["username"]) ?></a></li>
+                        <li><a href="#" style="font-weight: bold; color: red;"><?= ucfirst($_SESSION["username"]) ?></a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

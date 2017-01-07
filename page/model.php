@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($update) {
 		$sql = "UPDATE model SET kd_kriteria='$_POST[kd_kriteria]', kd_beasiswa='$_POST[kd_beasiswa]', bobot='$_POST[bobot]' WHERE kd_model='$_GET[key]'";
 	} else {
-		$sql = "INSERT INTO model VALUES ('$_POST[kd_model]', '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[bobot]')";
+		$sql = "INSERT INTO model VALUES (NULL, '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[bobot]')";
 	}
   if ($connection->query($sql)) {
     echo alert("Berhasil!", "?page=model");
@@ -29,10 +29,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-heading"><h3 class="text-center"><?= ($update) ? "EDIT" : "TAMBAH" ?></h3></div>
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
-	                <div class="form-group">
-	                    <label for="kd_model">Kode</label>
-	                    <input type="text" name="kd_model" class="form-control" <?= (!$update) ?: 'value="'.$row["kd_model"].'" disabled="on"' ?>>
-	                </div>
 									<div class="form-group">
 	                  <label for="kd_beasiswa">Beasiswa</label>
 										<select class="form-control" name="kd_beasiswa">
@@ -82,13 +78,12 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                </thead>
 	                <tbody>
 	                    <?php $no = 1; ?>
-	                    <?php if ($query = $connection->query("SELECT * FROM model")): ?>
+	                    <?php if ($query = $connection->query("SELECT c.nama AS nama_beasiswa, b.nama AS nama_kriteria, a.bobot FROM model a JOIN kriteria b ON a.kd_kriteria=b.kd_kriteria JOIN beasiswa c ON a.kd_beasiswa=c.kd_beasiswa")): ?>
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
-	                            <td><?=$row['kd_model']?></td>
-															<td><?=$row['kd_beasiswa']?></td>
-	                            <td><?=$row['kd_kriteria']?></td>
+															<td><?=$row['nama_beasiswa']?></td>
+	                            <td><?=$row['nama_kriteria']?></td>
 	                            <td><?=$row['bobot']?></td>
 	                            <td>
 	                                <div class="btn-group">
