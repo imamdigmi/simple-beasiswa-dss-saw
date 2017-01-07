@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 30, 2016 at 12:57 AM
+-- Generation Time: Jan 07, 2017 at 08:11 PM
 -- Server version: 5.7.16-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -29,9 +29,20 @@ USE `beasiswa`;
 --
 
 CREATE TABLE `beasiswa` (
-  `kd_beasiswa` char(5) NOT NULL,
+  `kd_beasiswa` int(11) NOT NULL,
   `nama` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `beasiswa`
+--
+
+INSERT INTO `beasiswa` (`kd_beasiswa`, `nama`) VALUES
+(1, 'Beasiswa PPA'),
+(2, 'Bidikmisi'),
+(3, 'Beasiswa BBM'),
+(4, 'Beasiswa BNI'),
+(5, 'Beasiswa Dikpora');
 
 -- --------------------------------------------------------
 
@@ -40,10 +51,10 @@ CREATE TABLE `beasiswa` (
 --
 
 CREATE TABLE `hasil` (
-  `kd_hasil` char(5) NOT NULL,
+  `kd_hasil` int(11) NOT NULL,
   `nim` char(9) NOT NULL,
-  `kd_beasiswa` char(5) NOT NULL,
-  `nilai` double DEFAULT NULL,
+  `kd_beasiswa` int(11) NOT NULL,
+  `nilai` decimal(3,0) DEFAULT NULL,
   `tahun` char(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -54,10 +65,20 @@ CREATE TABLE `hasil` (
 --
 
 CREATE TABLE `kriteria` (
-  `kd_kriteria` char(5) NOT NULL,
+  `kd_kriteria` int(11) NOT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `sifat` enum('min','max') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `kriteria`
+--
+
+INSERT INTO `kriteria` (`kd_kriteria`, `nama`, `sifat`) VALUES
+(1, 'IPK', 'max'),
+(2, 'Semester', 'max'),
+(3, 'Penghasilan Orangtua', 'min'),
+(4, 'Tanggungan Orangtua', 'max');
 
 -- --------------------------------------------------------
 
@@ -67,11 +88,20 @@ CREATE TABLE `kriteria` (
 
 CREATE TABLE `mahasiswa` (
   `nim` char(9) NOT NULL,
-  `nama` varchar(25) NOT NULL,
-  `alamat` varchar(40) DEFAULT NULL,
+  `nama` varchar(30) NOT NULL,
+  `alamat` varchar(100) DEFAULT NULL,
   `jenis_kelamin` enum('Laki-laki','Perempuan') DEFAULT NULL,
   `tahun_mengajukan` char(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`nim`, `nama`, `alamat`, `jenis_kelamin`, `tahun_mengajukan`) VALUES
+('135610103', 'Imam Taufiq', 'jogja', 'Laki-laki', '2017'),
+('135610104', 'Heni', 'palembang', 'Perempuan', '2017'),
+('135610105', 'Fitri', 'medan', 'Perempuan', '2017');
 
 -- --------------------------------------------------------
 
@@ -80,11 +110,20 @@ CREATE TABLE `mahasiswa` (
 --
 
 CREATE TABLE `model` (
-  `kd_model` char(5) NOT NULL,
-  `kd_beasiswa` char(5) NOT NULL,
-  `kd_kriteria` char(5) NOT NULL,
-  `bobot` char(3) DEFAULT NULL
+  `kd_model` int(11) NOT NULL,
+  `kd_beasiswa` int(11) NOT NULL,
+  `kd_kriteria` int(11) NOT NULL,
+  `bobot` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `model`
+--
+
+INSERT INTO `model` (`kd_model`, `kd_beasiswa`, `kd_kriteria`, `bobot`) VALUES
+(3, 1, 1, '0.40'),
+(4, 1, 2, '0.30'),
+(5, 1, 3, '0.30');
 
 -- --------------------------------------------------------
 
@@ -93,11 +132,27 @@ CREATE TABLE `model` (
 --
 
 CREATE TABLE `nilai` (
-  `kd_nilai` char(5) NOT NULL,
-  `kd_kriteria` char(5) NOT NULL,
+  `kd_nilai` int(11) NOT NULL,
+  `kd_beasiswa` int(11) DEFAULT NULL,
+  `kd_kriteria` int(11) NOT NULL,
   `nim` char(9) NOT NULL,
-  `nilai` decimal(3,0) DEFAULT NULL
+  `nilai` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `nilai`
+--
+
+INSERT INTO `nilai` (`kd_nilai`, `kd_beasiswa`, `kd_kriteria`, `nim`, `nilai`) VALUES
+(6, 1, 1, '135610103', 2),
+(7, 1, 2, '135610103', 2),
+(8, 1, 3, '135610103', 2),
+(9, 1, 1, '135610104', 4),
+(10, 1, 2, '135610104', 4),
+(11, 1, 3, '135610104', 4),
+(12, 1, 1, '135610105', 6),
+(13, 1, 2, '135610105', 6),
+(14, 1, 3, '135610105', 6);
 
 -- --------------------------------------------------------
 
@@ -106,7 +161,7 @@ CREATE TABLE `nilai` (
 --
 
 CREATE TABLE `pengguna` (
-  `kd_pengguna` int(5) NOT NULL,
+  `kd_pengguna` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(60) NOT NULL,
   `status` enum('petugas','puket','mahasiswa') DEFAULT NULL
@@ -127,11 +182,30 @@ INSERT INTO `pengguna` (`kd_pengguna`, `username`, `password`, `status`) VALUES
 --
 
 CREATE TABLE `penilaian` (
-  `kd_penilaian` char(5) NOT NULL,
-  `kd_kriteria` char(5) NOT NULL,
+  `kd_penilaian` int(11) NOT NULL,
+  `kd_beasiswa` int(11) DEFAULT NULL,
+  `kd_kriteria` int(11) NOT NULL,
   `keterangan` varchar(20) NOT NULL,
-  `bobot` char(3) DEFAULT NULL
+  `bobot` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `penilaian`
+--
+
+INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterangan`, `bobot`) VALUES
+(1, 1, 1, '3.00 - 3.20', 2),
+(4, 1, 1, '3.21 - 3.40', 4),
+(5, 1, 1, '3.41 - 3.60', 6),
+(6, 1, 1, '>= 3.61', 8),
+(7, 1, 2, '2 - 3', 2),
+(8, 1, 2, '4 - 5', 4),
+(9, 1, 2, '6 - 7', 6),
+(10, 1, 2, '8', 8),
+(11, 1, 3, '<= 500000', 2),
+(12, 1, 3, '600000 - 1500000', 4),
+(13, 1, 3, '1600000 - 2500000', 6),
+(14, 1, 3, '>= 26000000', 8);
 
 --
 -- Indexes for dumped tables
@@ -177,7 +251,8 @@ ALTER TABLE `model`
 ALTER TABLE `nilai`
   ADD PRIMARY KEY (`kd_nilai`),
   ADD KEY `fk_kriteria` (`kd_kriteria`),
-  ADD KEY `fk_mahasiswa` (`nim`);
+  ADD KEY `fk_mahasiswa` (`nim`),
+  ADD KEY `fk_beasiswa` (`kd_beasiswa`);
 
 --
 -- Indexes for table `pengguna`
@@ -190,17 +265,48 @@ ALTER TABLE `pengguna`
 --
 ALTER TABLE `penilaian`
   ADD PRIMARY KEY (`kd_penilaian`),
-  ADD KEY `fk_kriteria` (`kd_kriteria`);
+  ADD KEY `fk_kriteria` (`kd_kriteria`),
+  ADD KEY `fk_beasiswa` (`kd_beasiswa`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `beasiswa`
+--
+ALTER TABLE `beasiswa`
+  MODIFY `kd_beasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `hasil`
+--
+ALTER TABLE `hasil`
+  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `kriteria`
+--
+ALTER TABLE `kriteria`
+  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `model`
+--
+ALTER TABLE `model`
+  MODIFY `kd_model` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `nilai`
+--
+ALTER TABLE `nilai`
+  MODIFY `kd_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `kd_pengguna` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `kd_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `penilaian`
+--
+ALTER TABLE `penilaian`
+  MODIFY `kd_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- Constraints for dumped tables
 --
@@ -224,13 +330,15 @@ ALTER TABLE `model`
 --
 ALTER TABLE `nilai`
   ADD CONSTRAINT `nilai_ibfk_1` FOREIGN KEY (`kd_kriteria`) REFERENCES `kriteria` (`kd_kriteria`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nilai_ibfk_2` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `nilai_ibfk_2` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nilai_ibfk_3` FOREIGN KEY (`kd_beasiswa`) REFERENCES `beasiswa` (`kd_beasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `penilaian`
 --
 ALTER TABLE `penilaian`
-  ADD CONSTRAINT `penilaian_ibfk_1` FOREIGN KEY (`kd_kriteria`) REFERENCES `kriteria` (`kd_kriteria`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `penilaian_ibfk_1` FOREIGN KEY (`kd_kriteria`) REFERENCES `kriteria` (`kd_kriteria`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `penilaian_ibfk_2` FOREIGN KEY (`kd_beasiswa`) REFERENCES `beasiswa` (`kd_beasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
