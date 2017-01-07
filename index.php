@@ -23,13 +23,20 @@ if (empty($_SESSION)) {
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">BEASISWA</a>
+                    <a class="navbar-brand" href="#"><?php $str = (isset($_GET["page"])) ? (($_GET["page"] == "nilai") ? "persyaratan" : $_GET["page"]) : "home"; echo strtoupper($str)?></a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="?page=home">Beranda <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#" style="font-weight: bold; color: green;">Perhitungan</a></li>
                         <?php if ($_SESSION["as"] == "puket"): ?>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" style="font-weight: bold; color: green;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perhitungan <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <?php $query = $connection->query("SELECT * FROM beasiswa"); while ($row = $query->fetch_assoc()): ?>
+                                <li><a href="?page=perhitungan&beasiswa=<?=$row["kd_beasiswa"]?>"><?=$row["nama"]?></a></li>
+                              <?php endwhile; ?>
+                            </ul>
+                          </li>
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Input <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -43,7 +50,10 @@ if (empty($_SESSION)) {
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laporan <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                              <li><a href="?page=lap_pengumuman">Pengumuman</a></li>
+                              <li><a href="?page=lap_perbeasiswa">Per Beasiswa</a></li>
+                              <li><a href="?page=lap_permahasiswa">Per Mahasiswa</a></li>
+                              <li><a href="?page=lap_seluruh">Seluruh Mahasiswa</a></li>
+                              <li class="divider"></li>
                               <li><a href="?page=lap_pendaftaran">Pendaftaran</a></li>
                             </ul>
                           </li>
