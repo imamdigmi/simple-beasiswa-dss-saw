@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "config.php";
-if (empty($_SESSION)) {
+if (!isset($_SESSION["is_logged"])) {
   header('location: login.php');
 }
 ?>
