@@ -2,7 +2,7 @@
 require_once "config.php";
 if ($_GET["get"] == "kriteria") {
 	$kriteria = [];
-	$query = $connection->query("SELECT b.kd_kriteria, b.nama FROM model a JOIN kriteria b USING(kd_kriteria) JOIN beasiswa c USING(kd_beasiswa) WHERE kd_beasiswa=$_GET[beasiswa]");
+	$query = $connection->query("SELECT b.kd_kriteria, b.nama FROM model a JOIN kriteria b ON a.kd_kriteria=b.kd_kriteria JOIN beasiswa c ON a.kd_beasiswa=c.kd_beasiswa WHERE a.kd_beasiswa=$_GET[beasiswa]");
 	while ($row = $query->fetch_assoc()) {
 		$kriteria[] = ["kd_kriteria" => $row["kd_kriteria"], "nama" => $row["nama"]];
 	}
