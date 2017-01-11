@@ -7,9 +7,9 @@ if ($update) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($update) {
-		$sql = "UPDATE kriteria SET nama='$_POST[nama]', sifat='$_POST[sifat]' WHERE kd_kriteria='$_GET[key]'";
+		$sql = "UPDATE kriteria SET kd_beasiswa=$_POST[kd_beasiswa], nama='$_POST[nama]', sifat='$_POST[sifat]' WHERE kd_kriteria='$_GET[key]'";
 	} else {
-		$sql = "INSERT INTO kriteria VALUES (NULL, '$_POST[nama]', '$_POST[sifat]')";
+		$sql = "INSERT INTO kriteria VALUES (NULL, $_POST[kd_beasiswa], '$_POST[nama]', '$_POST[sifat]')";
 	}
   if ($connection->query($sql)) {
     echo alert("Berhasil!", "?page=kriteria");
@@ -29,6 +29,15 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	        <div class="panel-heading"><h3 class="text-center"><?= ($update) ? "EDIT" : "TAMBAH" ?></h3></div>
 	        <div class="panel-body">
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
+									<div class="form-group">
+										<label for="kd_beasiswa">Beasiswa</label>
+										<select class="form-control" name="kd_beasiswa">
+											<option>---</option>
+											<?php $query = $connection->query("SELECT * FROM beasiswa"); while ($data = $query->fetch_assoc()): ?>
+												<option value="<?=$data["kd_beasiswa"]?>" <?= (!$update) ?: (($row["kd_beasiswa"] != $data["kd_beasiswa"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php endwhile; ?>
+										</select>
+									</div>
 	                <div class="form-group">
 	                    <label for="nama">Nama</label>
 	                    <input type="text" name="nama" class="form-control" <?= (!$update) ?: 'value="'.$row["nama"].'"' ?>>
@@ -57,18 +66,20 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                <thead>
 	                    <tr>
 	                        <th>No</th>
-	                        <th>Nama</th>
+	                        <th>Beasiswa</th>
+	                        <th>Kriteria</th>
 	                        <th>Sifat</th>
 	                        <th></th>
 	                    </tr>
 	                </thead>
 	                <tbody>
 	                    <?php $no = 1; ?>
-	                    <?php if ($query = $connection->query("SELECT * FROM kriteria")): ?>
+	                    <?php if ($query = $connection->query("SELECT a.nama AS kriteria, b.nama AS beasiswa, a.kd_kriteria, a.sifat FROM kriteria a JOIN beasiswa b USING(kd_beasiswa)")): ?>
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
-	                            <td><?=$row['nama']?></td>
+	                            <td><?=$row['beasiswa']?></td>
+	                            <td><?=$row['kriteria']?></td>
 	                            <td><?=$row['sifat']?></td>
 	                            <td>
 	                                <div class="btn-group">
