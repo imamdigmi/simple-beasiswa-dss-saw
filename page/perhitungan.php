@@ -4,6 +4,7 @@
 		$sql = "SELECT
 						(SELECT nama FROM mahasiswa WHERE nim=mhs.nim) AS nama,
 						(SELECT nim FROM mahasiswa WHERE nim=mhs.nim) AS nim,
+						(SELECT tahun_mengajukan FROM mahasiswa WHERE nim=mhs.nim) AS tahun,
 					  SUM(
 					  	IF (
 					      	c.sifat = 'max',
@@ -40,12 +41,18 @@
 	                      <th>No</th>
 												<th>NIM</th>
 												<th>Nama</th>
+												<?php if ($query = $connection->query("SELECT nama FROM kriteria WHERE kd_beasiswa=$_POST[beasiswa]")): ?>
+														<?php while($row = $query->fetch_assoc()): ?>
+															<th><?=$row["nama"]?></th>
+														<?php endwhile ?>
+												<?php endif ?>
 												<th>Nilai</th>
 	                  </tr>
 	              </thead>
 	              <tbody>
 	                  <?php $no = 1; ?>
 	                  <?php $query = $connection->query($sql); while($row = $query->fetch_assoc()): ?>
+										<?php $connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '$row[rangking]', '$row[tahun]')") ?>
 	                  <tr>
 	                      <td><?=$no++?></td>
 	                      <td><?=$row["nim"]?></td>
