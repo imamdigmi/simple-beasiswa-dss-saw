@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 07, 2017 at 08:11 PM
+-- Generation Time: Jan 11, 2017 at 12:33 PM
 -- Server version: 5.7.16-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -66,6 +66,7 @@ CREATE TABLE `hasil` (
 
 CREATE TABLE `kriteria` (
   `kd_kriteria` int(11) NOT NULL,
+  `kd_beasiswa` int(11) NOT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `sifat` enum('min','max') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -74,11 +75,13 @@ CREATE TABLE `kriteria` (
 -- Dumping data for table `kriteria`
 --
 
-INSERT INTO `kriteria` (`kd_kriteria`, `nama`, `sifat`) VALUES
-(1, 'IPK', 'max'),
-(2, 'Semester', 'max'),
-(3, 'Penghasilan Orangtua', 'min'),
-(4, 'Tanggungan Orangtua', 'max');
+INSERT INTO `kriteria` (`kd_kriteria`, `kd_beasiswa`, `nama`, `sifat`) VALUES
+(1, 1, 'IPK', 'max'),
+(2, 1, 'Semester', 'max'),
+(3, 1, 'Penghasilan Orangtua', 'min'),
+(5, 2, 'Semester', 'min'),
+(6, 2, 'Penghasilan Orangtua', 'min'),
+(7, 2, 'Tanggungan Orangtua', 'max');
 
 -- --------------------------------------------------------
 
@@ -144,14 +147,14 @@ CREATE TABLE `nilai` (
 --
 
 INSERT INTO `nilai` (`kd_nilai`, `kd_beasiswa`, `kd_kriteria`, `nim`, `nilai`) VALUES
-(6, 1, 1, '135610103', 2),
-(7, 1, 2, '135610103', 2),
-(8, 1, 3, '135610103', 2),
-(9, 1, 1, '135610104', 4),
-(10, 1, 2, '135610104', 4),
+(6, 1, 1, '135610103', 4),
+(7, 1, 2, '135610103', 8),
+(8, 1, 3, '135610103', 8),
+(9, 1, 1, '135610104', 6),
+(10, 1, 2, '135610104', 6),
 (11, 1, 3, '135610104', 4),
-(12, 1, 1, '135610105', 6),
-(13, 1, 2, '135610105', 6),
+(12, 1, 1, '135610105', 2),
+(13, 1, 2, '135610105', 4),
 (14, 1, 3, '135610105', 6);
 
 -- --------------------------------------------------------
@@ -229,7 +232,9 @@ ALTER TABLE `hasil`
 -- Indexes for table `kriteria`
 --
 ALTER TABLE `kriteria`
-  ADD PRIMARY KEY (`kd_kriteria`);
+  ADD PRIMARY KEY (`kd_kriteria`),
+  ADD KEY `kd_beasiswa` (`kd_beasiswa`),
+  ADD KEY `kd_beasiswa_2` (`kd_beasiswa`);
 
 --
 -- Indexes for table `mahasiswa`
@@ -286,7 +291,7 @@ ALTER TABLE `hasil`
 -- AUTO_INCREMENT for table `kriteria`
 --
 ALTER TABLE `kriteria`
-  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `model`
 --
@@ -317,6 +322,12 @@ ALTER TABLE `penilaian`
 ALTER TABLE `hasil`
   ADD CONSTRAINT `hasil_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hasil_ibfk_2` FOREIGN KEY (`kd_beasiswa`) REFERENCES `beasiswa` (`kd_beasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `kriteria`
+--
+ALTER TABLE `kriteria`
+  ADD CONSTRAINT `fk_beasiswa` FOREIGN KEY (`kd_beasiswa`) REFERENCES `beasiswa` (`kd_beasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `model`
