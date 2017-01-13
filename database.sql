@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 11, 2017 at 12:33 PM
+-- Generation Time: Jan 13, 2017 at 11:08 PM
 -- Server version: 5.7.16-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -52,9 +52,9 @@ INSERT INTO `beasiswa` (`kd_beasiswa`, `nama`) VALUES
 
 CREATE TABLE `hasil` (
   `kd_hasil` int(11) NOT NULL,
-  `nim` char(9) NOT NULL,
   `kd_beasiswa` int(11) NOT NULL,
-  `nilai` decimal(3,0) DEFAULT NULL,
+  `nim` char(9) NOT NULL,
+  `nilai` float DEFAULT NULL,
   `tahun` char(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -78,10 +78,7 @@ CREATE TABLE `kriteria` (
 INSERT INTO `kriteria` (`kd_kriteria`, `kd_beasiswa`, `nama`, `sifat`) VALUES
 (1, 1, 'IPK', 'max'),
 (2, 1, 'Semester', 'max'),
-(3, 1, 'Penghasilan Orangtua', 'min'),
-(5, 2, 'Semester', 'min'),
-(6, 2, 'Penghasilan Orangtua', 'min'),
-(7, 2, 'Tanggungan Orangtua', 'max');
+(3, 1, 'Penghasilan Orangtua', 'min');
 
 -- --------------------------------------------------------
 
@@ -126,7 +123,7 @@ CREATE TABLE `model` (
 INSERT INTO `model` (`kd_model`, `kd_beasiswa`, `kd_kriteria`, `bobot`) VALUES
 (3, 1, 1, '0.40'),
 (4, 1, 2, '0.30'),
-(5, 1, 3, '0.30');
+(5, 1, 3, '0.90');
 
 -- --------------------------------------------------------
 
@@ -141,21 +138,6 @@ CREATE TABLE `nilai` (
   `nim` char(9) NOT NULL,
   `nilai` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `nilai`
---
-
-INSERT INTO `nilai` (`kd_nilai`, `kd_beasiswa`, `kd_kriteria`, `nim`, `nilai`) VALUES
-(6, 1, 1, '135610103', 4),
-(7, 1, 2, '135610103', 8),
-(8, 1, 3, '135610103', 8),
-(9, 1, 1, '135610104', 6),
-(10, 1, 2, '135610104', 6),
-(11, 1, 3, '135610104', 4),
-(12, 1, 1, '135610105', 2),
-(13, 1, 2, '135610105', 4),
-(14, 1, 3, '135610105', 6);
 
 -- --------------------------------------------------------
 
@@ -191,24 +173,6 @@ CREATE TABLE `penilaian` (
   `keterangan` varchar(20) NOT NULL,
   `bobot` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `penilaian`
---
-
-INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterangan`, `bobot`) VALUES
-(1, 1, 1, '3.00 - 3.20', 2),
-(4, 1, 1, '3.21 - 3.40', 4),
-(5, 1, 1, '3.41 - 3.60', 6),
-(6, 1, 1, '>= 3.61', 8),
-(7, 1, 2, '2 - 3', 2),
-(8, 1, 2, '4 - 5', 4),
-(9, 1, 2, '6 - 7', 6),
-(10, 1, 2, '8', 8),
-(11, 1, 3, '<= 500000', 2),
-(12, 1, 3, '600000 - 1500000', 4),
-(13, 1, 3, '1600000 - 2500000', 6),
-(14, 1, 3, '>= 26000000', 8);
 
 --
 -- Indexes for dumped tables
@@ -286,12 +250,12 @@ ALTER TABLE `beasiswa`
 -- AUTO_INCREMENT for table `hasil`
 --
 ALTER TABLE `hasil`
-  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `kriteria`
 --
 ALTER TABLE `kriteria`
-  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `model`
 --
