@@ -61,7 +61,12 @@
 	              </thead>
 	              <tbody>
 	                  <?php $query = $connection->query($sql); while($row = $query->fetch_assoc()): ?>
-										<?php $connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '$row[rangking]', '$row[tahun]')") ?>
+										<?php
+										$q = $connection->query("SELECT nim FROM hasil WHERE nim='$row[nim]' AND kd_beasiswa='$_GET[beasiswa]' AND tahun='$row[tahun]'");
+										if (!$q->num_rows) {
+											$connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '$row[rangking]', '$row[tahun]')");
+										}
+										?>
 	                  <tr>
 	                      <td><?=$row["nim"]?></td>
 	                      <td><?=$row["nama"]?></td>

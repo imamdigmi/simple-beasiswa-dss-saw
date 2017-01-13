@@ -11,11 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	} else {
 		$sql = "INSERT INTO kriteria VALUES (NULL, $_POST[kd_beasiswa], '$_POST[nama]', '$_POST[sifat]')";
 	}
-  if ($connection->query($sql)) {
-    echo alert("Berhasil!", "?page=kriteria");
-  } else {
-		echo alert("Gagal!", "?page=kriteria");
-  }
+	$q = $connection->query("SELECT nama FROM kriteria WHERE kd_beasiswa=$_POST[kd_beasiswa] AND nama LIKE '%$_POST[nama]%'");
+	if (!$q->num_rows) {
+	  if ($connection->query($sql)) {
+	    echo alert("Berhasil!", "?page=kriteria");
+	  } else {
+			echo alert("Gagal!", "?page=kriteria");
+	  }
+	} else {
+		echo alert("Kriteria sudah ada!", "?page=kriteria");
+	}
 }
 
 if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
