@@ -51,10 +51,7 @@ if (!isset($_SESSION["is_logged"])) {
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laporan <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                              <li><a href="?page=lap_perbeasiswa">Per Beasiswa</a></li>
-                              <li><a href="?page=lap_permahasiswa">Per Mahasiswa</a></li>
                               <li><a href="?page=lap_seluruh">Seluruh Mahasiswa</a></li>
-                              <li class="divider"></li>
                               <li><a href="?page=lap_pendaftaran">Pendaftaran</a></li>
                             </ul>
                           </li>
