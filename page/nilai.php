@@ -6,16 +6,27 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE nilai SET kd_kriteria='$_POST[kd_kriteria]', nim='$_POST[nim]', nilai='$_POST[nilai]' WHERE kd_nilai='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO nilai VALUES (NULL, '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[nim]', '$_POST[nilai]')";
+		$validasi = true;
 	}
-  if ($connection->query($sql)) {
-    echo alert("Berhasil!", "?page=nilai");
-  } else {
+
+	if ($validasi) {
+		$q = $connection->query("SELECT kd_nilai FROM nilai WHERE kd_beasiswa=$_POST[kd_beasiswa] AND kd_kriteria=$_POST[kd_kriteria] AND nim=$_POST[nim] AND nilai LIKE '%$_POST[nilai]%'");
+		if ($q->num_rows) {
+			echo alert("Nilai untuk ".$_POST["nim"]." sudah ada!", "?page=nilai");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
+		echo alert("Berhasil!", "?page=nilai");
+	} else {
 		echo alert("Gagal!", "?page=nilai");
-  }
+	}
 }
 
 if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
@@ -73,9 +84,10 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                <thead>
 	                    <tr>
 	                        <th>No</th>
-	                        <th>Kode</th>
+													<th>NIM</th>
+													<th>Nama</th>
+	                        <th>Beasiswa</th>
 	                        <th>Kriteria</th>
-	                        <th>Mahasiswa</th>
 	                        <th>Nilai</th>
 	                        <th></th>
 	                    </tr>
@@ -86,10 +98,10 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                        <?php while($row = $query->fetch_assoc()): ?>
 	                        <tr>
 	                            <td><?=$no++?></td>
+															<td><?=$row['nim']?></td>
+															<td><?=$row['nama_mahasiswa']?></td>
 	                            <td><?=$row['nama_beasiswa']?></td>
 	                            <td><?=$row['nama_kriteria']?></td>
-	                            <td><?=$row['nim']?></td>
-	                            <td><?=$row['nama_mahasiswa']?></td>
 	                            <td><?=$row['nilai']?></td>
 	                            <td>
 	                                <div class="btn-group">

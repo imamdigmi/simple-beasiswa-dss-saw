@@ -6,12 +6,23 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE beasiswa SET nama='$_POST[nama]' WHERE kd_beasiswa='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO beasiswa VALUES (NULL, '$_POST[nama]')";
+		$validasi = true;
 	}
-  if ($connection->query($sql)) {
+
+	if ($validasi) {
+		$q = $connection->query("SELECT kd_beasiswa FROM beasiswa WHERE nama LIKE '%$_POST[nama]%'");
+		if ($q->num_rows) {
+			echo alert("Beasiswa sudah ada!", "?page=beasiswa");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
     echo alert("Berhasil!", "?page=beasiswa");
   } else {
 		echo alert("Gagal!", "?page=beasiswa");

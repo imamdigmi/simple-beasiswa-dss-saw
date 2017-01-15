@@ -6,12 +6,23 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE mahasiswa SET nim='$_POST[nim]', nama='$_POST[nama]', alamat='$_POST[alamat]', jenis_kelamin='$_POST[jenis_kelamin]', tahun_mengajukan='".date("Y")."' WHERE nim='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO mahasiswa VALUES ('$_POST[nim]', '$_POST[nama]', '$_POST[alamat]', '$_POST[jenis_kelamin]', '".date("Y")."')";
+		$validasi = true;
 	}
-  if ($connection->query($sql)) {
+
+	if ($validasi) {
+		$q = $connection->query("SELECT nim FROM mahasiswa WHERE nim=$_POST[nim]");
+		if ($q->num_rows) {
+			echo alert($_POST["nim"]." sudah terdaftar!", "?page=mahasiswa");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
     echo alert("Berhasil!", "?page=mahasiswa");
   } else {
 		echo alert("Gagal!", "?page=mahasiswa");

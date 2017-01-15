@@ -6,20 +6,26 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE kriteria SET kd_beasiswa=$_POST[kd_beasiswa], nama='$_POST[nama]', sifat='$_POST[sifat]' WHERE kd_kriteria='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO kriteria VALUES (NULL, $_POST[kd_beasiswa], '$_POST[nama]', '$_POST[sifat]')";
+		$validasi = true;
 	}
-	$q = $connection->query("SELECT nama FROM kriteria WHERE kd_beasiswa=$_POST[kd_beasiswa] AND nama LIKE '%$_POST[nama]%'");
-	if (!$q->num_rows) {
-	  if ($connection->query($sql)) {
-	    echo alert("Berhasil!", "?page=kriteria");
-	  } else {
-			echo alert("Gagal!", "?page=kriteria");
-	  }
+
+	if ($validasi) {
+		$q = $connection->query("SELECT kd_kriteria FROM kriteria WHERE kd_beasiswa=$_POST[kd_beasiswa] AND nama LIKE '%$_POST[nama]%'");
+		if ($q->num_rows) {
+			echo alert("Kriteri sudah ada!", "?page=kriteria");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
+		echo alert("Berhasil!", "?page=kriteria");
 	} else {
-		echo alert("Kriteria sudah ada!", "?page=kriteria");
+		echo alert("Gagal!", "?page=kriteria");
 	}
 }
 

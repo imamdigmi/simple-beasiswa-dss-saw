@@ -6,15 +6,26 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE penilaian SET kd_kriteria='$_POST[kd_kriteria]', keterangan='$_POST[keterangan]', bobot='$_POST[bobot]' WHERE kd_penilaian='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO penilaian VALUES (NULL, '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[keterangan]', '$_POST[bobot]')";
+		$validasi = true;
 	}
-  if ($connection->query($sql)) {
+
+	if ($validasi) {
+		$q = $connection->query("SELECT kd_penilaian FROM penilaian WHERE kd_beasiswa=$_POST[kd_beasiswa] AND kd_kriteria=$_POST[kd_kriteria] AND keterangan LIKE '%$_POST[keterangan]%' AND bobot=$_POST[bobot]");
+		if ($q->num_rows) {
+			echo alert("Penilaian sudah ada!", "?page=penilaian");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
     echo alert("Berhasil!", "?page=penilaian");
   } else {
-		echo alert("Gagal! :" . $connection->error, "?page=penilaian");
+		echo alert("Gagal!", "?page=penilaian");
   }
 }
 

@@ -6,16 +6,27 @@ if ($update) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$validasi = false; $err = false;
 	if ($update) {
 		$sql = "UPDATE model SET kd_kriteria='$_POST[kd_kriteria]', kd_beasiswa='$_POST[kd_beasiswa]', bobot='$_POST[bobot]' WHERE kd_model='$_GET[key]'";
 	} else {
 		$sql = "INSERT INTO model VALUES (NULL, '$_POST[kd_beasiswa]', '$_POST[kd_kriteria]', '$_POST[bobot]')";
+		$validasi = true;
 	}
-  if ($connection->query($sql)) {
-    echo alert("Berhasil!", "?page=model");
-  } else {
+
+	if ($validasi) {
+		$q = $connection->query("SELECT kd_model FROM model WHERE kd_beasiswa=$_POST[kd_beasiswa] AND kd_kriteria=$_POST[kd_kriteria] AND bobot LIKE '%$_POST[bobot]%'");
+		if ($q->num_rows) {
+			echo alert("Model sudah ada!", "?page=model");
+			$err = true;
+		}
+	}
+
+  if (!$err AND $connection->query($sql)) {
+		echo alert("Berhasil!", "?page=model");
+	} else {
 		echo alert("Gagal!", "?page=model");
-  }
+	}
 }
 
 if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
@@ -69,7 +80,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                <thead>
 	                    <tr>
 	                        <th>No</th>
-	                        <th>Kode</th>
 													<th>Beasiswa</th>
 	                        <th>Kriteria</th>
 	                        <th>Bobot</th>
