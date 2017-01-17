@@ -3,7 +3,7 @@
 	<?php if (isset($_GET["beasiswa"])) {
 		$sqlKriteria = "";
 		$namaKriteria = [];
-		$queryKriteria = $connection->query("SELECT a.kd_kriteria, a.nama FROM kriteria a JOIN model b USING(kd_kriteria) WHERE a.kd_beasiswa=$_GET[beasiswa]");
+		$queryKriteria = $connection->query("SELECT a.kd_kriteria, a.nama FROM kriteria a JOIN model b USING(kd_kriteria) WHERE b.kd_beasiswa=$_GET[beasiswa]");
 		while ($kr = $queryKriteria->fetch_assoc()) {
 			$sqlKriteria .= "SUM(
 				IF(
@@ -33,13 +33,14 @@
 						nilai.kd_kriteria AS kd_kriteria,
 						kriteria.sifat AS sifat,
 						(
-							SELECT bobot FROM model WHERE kd_kriteria=kriteria.kd_kriteria
+							SELECT bobot FROM model WHERE kd_kriteria=kriteria.kd_kriteria AND kd_beasiswa=beasiswa.kd_beasiswa
 						) AS bobot,
 						ROUND(
 							IF(kriteria.sifat='max', MAX(nilai.nilai), MIN(nilai.nilai)), 1
 						) AS normalization
 					FROM nilai
 					JOIN kriteria USING(kd_kriteria)
+					JOIN beasiswa ON kriteria.kd_beasiswa=beasiswa.kd_beasiswa
 				GROUP BY nilai.kd_kriteria
 			) c USING(kd_kriteria)
 		WHERE kd_beasiswa=1
