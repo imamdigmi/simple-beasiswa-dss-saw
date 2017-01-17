@@ -16,9 +16,9 @@
 		$sql = "SELECT
 			(SELECT nama FROM mahasiswa WHERE nim=mhs.nim) AS nama,
 			(SELECT nim FROM mahasiswa WHERE nim=mhs.nim) AS nim,
-			(SELECT tahun_mengajukan FROM mahasiswa WHERE nim=mhs.nim) AS tahun,"
-			.$sqlKriteria.
-			"SUM(
+			(SELECT tahun_mengajukan FROM mahasiswa WHERE nim=mhs.nim) AS tahun,
+			$sqlKriteria
+			SUM(
 				IF(
 						c.sifat = 'max',
 						nilai.nilai / c.normalization,
@@ -43,7 +43,7 @@
 					JOIN beasiswa ON kriteria.kd_beasiswa=beasiswa.kd_beasiswa
 				GROUP BY nilai.kd_kriteria
 			) c USING(kd_kriteria)
-		WHERE kd_beasiswa=1
+		WHERE kd_beasiswa=$_GET[beasiswa]
 		GROUP BY nilai.nim
 		ORDER BY rangking DESC"; ?>
 	  <div class="panel panel-info">
