@@ -41,6 +41,7 @@
 					FROM nilai
 					JOIN kriteria USING(kd_kriteria)
 					JOIN beasiswa ON kriteria.kd_beasiswa=beasiswa.kd_beasiswa
+					WHERE beasiswa.kd_beasiswa=$_GET[beasiswa]
 				GROUP BY nilai.kd_kriteria
 			) c USING(kd_kriteria)
 		WHERE kd_beasiswa=$_GET[beasiswa]
@@ -65,16 +66,16 @@
 										<?php
 										$q = $connection->query("SELECT nim FROM hasil WHERE nim='$row[nim]' AND kd_beasiswa='$_GET[beasiswa]' AND tahun='$row[tahun]'");
 										if (!$q->num_rows) {
-											$connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '$row[rangking]', '$row[tahun]')");
+											$connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '".number_format((float) $row["rangking"], 8, '.', '')."', '$row[tahun]')");
 										}
 										?>
 	                  <tr>
 	                      <td><?=$row["nim"]?></td>
 	                      <td><?=$row["nama"]?></td>
 														<?php for($i=0; $i<count($namaKriteria); $i++): ?>
-															<th><?=$row[$namaKriteria[$i]]?></th>
+															<th><?=number_format((float) $row[$namaKriteria[$i]], 8, '.', '');?></th>
 														<?php endfor ?>
-	                      <td><?=$row["rangking"]?></td>
+	                      <td><?=number_format((float) $row["rangking"], 8, '.', '');?></td>
 	                  </tr>
 									<?php endwhile;?>
 	              </tbody>
