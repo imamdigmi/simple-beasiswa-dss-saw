@@ -42,7 +42,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	            <form action="<?=$_SERVER['REQUEST_URI']?>" method="POST">
 									<div class="form-group">
 	                  <label for="kd_beasiswa">Beasiswa</label>
-										<select class="form-control" name="kd_beasiswa">
+										<select class="form-control" name="kd_beasiswa" id="beasiswa">
 											<option>---</option>
 											<?php $sql = $connection->query("SELECT * FROM beasiswa") ?>
 											<?php while ($data = $sql->fetch_assoc()): ?>
@@ -52,13 +52,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 									</div>
 									<div class="form-group">
 	                  <label for="kd_kriteria">Kriteria</label>
-										<select class="form-control" name="kd_kriteria">
-											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ?: (($row["kd_kriteria"] != $data["kd_kriteria"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
-											<?php endwhile; ?>
-										</select>
+										<select class="form-control" name="kd_kriteria" id="kriteria"></select>
 									</div>
 	                <div class="form-group">
 	                    <label for="keterangan">Keterangan</label>
@@ -116,3 +110,19 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	    </div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$(function() {
+	$("#beasiswa").change(function() {
+		if ($(this).val() != 0) {
+			$.get("ajax.php?get=kriteria&beasiswa="+$(this).val(), function(kriteria){
+					var html = "<option>---</option>";
+					for(var i=0; i<kriteria.length; i++){
+							html += "<option value='"+kriteria[i].kd_kriteria+"'>"+kriteria[i].nama+"</option>";
+					}
+					$("#kriteria").html(html);
+			},"json");
+		}
+	});
+});
+</script>
