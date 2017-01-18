@@ -45,14 +45,14 @@ if (empty($_SESSION)) {
 			                </thead>
 			                <tbody>
 			                    <?php $no = 1; ?>
-			                    <?php if ($query = $connection->query("SELECT b.nama AS beasiswa, * FROM hasil a JOIN beasiswa b ON a.kd_beasiswa=b.beasiswa")): ?>
+			                    <?php if ($query = $connection->query("SELECT b.nama AS beasiswa, a.nim, a.nilai, a.tahun, c.nama FROM hasil a JOIN beasiswa b USING(kd_beasiswa) JOIN mahasiswa c ON a.nim=c.nim")): ?>
 			                        <?php while($row = $query->fetch_assoc()): ?>
 			                        <tr>
 			                            <td><?=$no++?></td>
 																	<td><?=$row["nim"]?></td>
 																	<td><?=$row["nama"]?></td>
-			                            <td><?=$row["biasiswa"]?></td>
-			                            <td><?=$row['nilai']?></td>
+			                            <td><?=$row["beasiswa"]?></td>
+			                            <td><?=number_format((float) $row["nilai"], 8, '.', '')?></td>
 			                            <td><?=$row['tahun']?></td>
 			                        </tr>
 			                        <?php endwhile ?>
