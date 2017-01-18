@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 13, 2017 at 11:08 PM
+-- Generation Time: Jan 18, 2017 at 10:18 AM
 -- Server version: 5.7.16-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `beasiswa`
 --
-CREATE DATABASE IF NOT EXISTS `beasiswa` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `beasiswa`;
 
 -- --------------------------------------------------------
 
@@ -39,10 +37,7 @@ CREATE TABLE `beasiswa` (
 
 INSERT INTO `beasiswa` (`kd_beasiswa`, `nama`) VALUES
 (1, 'Beasiswa PPA'),
-(2, 'Bidikmisi'),
-(3, 'Beasiswa BBM'),
-(4, 'Beasiswa BNI'),
-(5, 'Beasiswa Dikpora');
+(7, 'Beasiswa BBB PPA');
 
 -- --------------------------------------------------------
 
@@ -57,6 +52,18 @@ CREATE TABLE `hasil` (
   `nilai` float DEFAULT NULL,
   `tahun` char(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hasil`
+--
+
+INSERT INTO `hasil` (`kd_hasil`, `kd_beasiswa`, `nim`, `nilai`, `tahun`) VALUES
+(1, 1, '125610036', 0.95, '2017'),
+(2, 1, '125610080', 0.6, '2017'),
+(3, 1, '125610076', 0.566667, '2017'),
+(4, 7, '125610036', 0.95, '2017'),
+(5, 7, '125610080', 0.666667, '2017'),
+(6, 7, '125610076', 0.5, '2017');
 
 -- --------------------------------------------------------
 
@@ -78,7 +85,10 @@ CREATE TABLE `kriteria` (
 INSERT INTO `kriteria` (`kd_kriteria`, `kd_beasiswa`, `nama`, `sifat`) VALUES
 (1, 1, 'IPK', 'max'),
 (2, 1, 'Semester', 'max'),
-(3, 1, 'Penghasilan Orangtua', 'min');
+(3, 1, 'Penghasilan Orangtua', 'min'),
+(9, 7, 'IPK', 'max'),
+(10, 7, 'Semester', 'max'),
+(11, 7, 'Penghasilan Orangtua', 'min');
 
 -- --------------------------------------------------------
 
@@ -99,9 +109,13 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`nim`, `nama`, `alamat`, `jenis_kelamin`, `tahun_mengajukan`) VALUES
-('135610103', 'Imam Taufiq', 'jogja', 'Laki-laki', '2017'),
-('135610104', 'Heni', 'palembang', 'Perempuan', '2017'),
-('135610105', 'Fitri', 'medan', 'Perempuan', '2017');
+('125610036', 'Anisa Reviana Sakti', 'Jogja', 'Perempuan', '2017'),
+('125610066', 'Muhammad Satria Bimantara', 'Klaten', 'Laki-laki', '2017'),
+('125610076', 'Heni Nurhidayati', 'palembang', 'Perempuan', '2017'),
+('125610080', 'Nur Afifah Safitri', 'Medan', 'Perempuan', '2017'),
+('125610090', 'Sapriadi', 'Palembang', 'Laki-laki', '2017'),
+('125610098', 'Tri Septa Kurnia', 'Kalimantan', 'Perempuan', '2017'),
+('125610099', 'anis', 'lampung', 'Perempuan', '2017');
 
 -- --------------------------------------------------------
 
@@ -122,8 +136,11 @@ CREATE TABLE `model` (
 
 INSERT INTO `model` (`kd_model`, `kd_beasiswa`, `kd_kriteria`, `bobot`) VALUES
 (3, 1, 1, '0.40'),
-(4, 1, 2, '0.30'),
-(5, 1, 3, '0.90');
+(4, 1, 2, '0.20'),
+(5, 1, 3, '0.40'),
+(11, 7, 9, '0.40'),
+(12, 7, 10, '0.20'),
+(13, 7, 11, '0.40');
 
 -- --------------------------------------------------------
 
@@ -138,6 +155,30 @@ CREATE TABLE `nilai` (
   `nim` char(9) NOT NULL,
   `nilai` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `nilai`
+--
+
+INSERT INTO `nilai` (`kd_nilai`, `kd_beasiswa`, `kd_kriteria`, `nim`, `nilai`) VALUES
+(15, 1, 1, '125610036', 2),
+(16, 1, 2, '125610036', 3),
+(17, 1, 3, '125610036', 2),
+(18, 1, 1, '125610080', 1),
+(19, 1, 2, '125610080', 4),
+(20, 1, 3, '125610080', 4),
+(21, 1, 1, '125610076', 1),
+(22, 1, 2, '125610076', 2),
+(24, 1, 3, '125610076', 3),
+(29, 7, 9, '125610036', 3),
+(30, 7, 10, '125610036', 3),
+(31, 7, 11, '125610036', 2),
+(32, 7, 9, '125610080', 2),
+(33, 7, 10, '125610080', 4),
+(34, 7, 11, '125610080', 4),
+(35, 7, 9, '125610076', 1),
+(36, 7, 10, '125610076', 2),
+(37, 7, 11, '125610076', 3);
 
 -- --------------------------------------------------------
 
@@ -173,6 +214,36 @@ CREATE TABLE `penilaian` (
   `keterangan` varchar(20) NOT NULL,
   `bobot` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `penilaian`
+--
+
+INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterangan`, `bobot`) VALUES
+(15, 1, 1, '3.00 - 3.20', 1),
+(16, 1, 1, '3.21 - 3.40', 2),
+(17, 1, 1, '3.41 - 3.40', 3),
+(18, 1, 1, '>= 3.61', 4),
+(22, 1, 2, '2 - 3', 1),
+(23, 1, 2, '4 - 5', 2),
+(24, 1, 2, '6 - 7', 3),
+(25, 1, 2, '8', 4),
+(26, 1, 3, '<= 500000', 1),
+(27, 1, 3, '600000 - 1500000', 2),
+(30, 1, 3, '1600000 - 2500000', 3),
+(31, 1, 3, '>= 2600000', 4),
+(55, 7, 9, '2.75 - 3.00', 1),
+(56, 7, 9, '3.10 - 3.35', 2),
+(57, 7, 9, '3.36 - 3.60', 3),
+(58, 7, 9, '>= 3.61', 4),
+(59, 7, 10, '2 - 3', 1),
+(60, 7, 10, '4 - 5', 2),
+(61, 7, 10, '6 - 7', 3),
+(62, 7, 10, '8', 4),
+(63, 7, 11, '<= 500000', 1),
+(64, 7, 11, '600000 - 1500000', 2),
+(65, 7, 11, '1600000 - 2500000', 3),
+(66, 7, 11, '>= 2600000', 4);
 
 --
 -- Indexes for dumped tables
@@ -245,27 +316,27 @@ ALTER TABLE `penilaian`
 -- AUTO_INCREMENT for table `beasiswa`
 --
 ALTER TABLE `beasiswa`
-  MODIFY `kd_beasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `kd_beasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `hasil`
 --
 ALTER TABLE `hasil`
-  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `kriteria`
 --
 ALTER TABLE `kriteria`
-  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `kd_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `model`
 --
 ALTER TABLE `model`
-  MODIFY `kd_model` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `kd_model` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `kd_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `kd_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
@@ -275,7 +346,7 @@ ALTER TABLE `pengguna`
 -- AUTO_INCREMENT for table `penilaian`
 --
 ALTER TABLE `penilaian`
-  MODIFY `kd_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `kd_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 --
 -- Constraints for dumped tables
 --
