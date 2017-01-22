@@ -12,32 +12,38 @@
 								<button type="submit" class="btn btn-primary">Tampilkan</button>
 							</form>
 	            <?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
-								<hr>
-								<h2 class="text-center">Laporan seluruh mahasiswa</h2>
+								<?php
+								$q = $connection->query("SELECT b.kd_beasiswa, b.nama, h.nilai, m.nama AS mahasiswa, m.nim, (SELECT MAX(nilai) FROM hasil WHERE nim=h.nim) AS nilai_max FROM mahasiswa m JOIN hasil h ON m.nim=h.nim JOIN beasiswa b ON b.kd_beasiswa=h.kd_beasiswa WHERE m.tahun_mengajukan='$_POST[tahun]'");
+								$beasiswa = []; $data = [];
+								while ($r = $q->fetch_assoc()) {
+									$beasiswa[$r["kd_beasiswa"]] = $r["nama"];
+									$data[$r["nim"]."-".$r["mahasiswa"]."-".$r["nilai_max"]][$r["kd_beasiswa"]] = $r["nilai"];
+								}
+								?>
 								<hr>
 								<table class="table table-condensed">
 		                <thead>
 		                    <tr>
-		                        <th>No</th>
-		                        <th>NIM</th>
-														<th>Nama</th>
-														<th>Beasiswa</th>
-														<th>Nilai</th>
+													<th>NIM</th>
+													<th>Nama</th>
+													<?php foreach ($beasiswa as $val): ?>
+			                        <th><?=$val?></th>
+													<?php endforeach; ?>
+													<th>Nilai Maksimal</th>
 		                    </tr>
 		                </thead>
 		                <tbody>
-		                    <?php $no = 1;?>
-		                    <?php if ($query = $connection->query("SELECT DISTINCT(nim), a.nama, a.tahun_mengajukan, c.nama AS beasiswa, b.nilai FROM mahasiswa a JOIN hasil b USING(nim) JOIN beasiswa c USING(kd_beasiswa) WHERE a.tahun_mengajukan='$_POST[tahun]'")): ?>
-		                        <?php while($row = $query->fetch_assoc()): ?>
-		                        <tr>
-		                            <td><?=$no++?></td>
-																<td><?=$row["nim"]?></td>
-		                            <td><?=$row["nama"]?></td>
-		                            <td><?=$row['beasiswa']?></td>
-		                            <td><?=$row['nilai']?></td>
-		                        </tr>
-		                        <?php endwhile ?>
-		                    <?php endif ?>
+                      <?php foreach($data as $key => $val): ?>
+												<tr>
+													<?php $x = explode("-", $key); ?>
+													<td><?=$x[0]?></td>
+													<td><?=$x[1]?></td>
+													<?php foreach ($val as $v): ?>
+														<td><?=number_format($v, 8)?></td>
+													<?php endforeach; ?>
+													<td><?=number_format($x[2], 8)?></td>
+												</tr>
+											<?php endforeach ?>
 		                </tbody>
 		            </table>
 	            <?php endif; ?>

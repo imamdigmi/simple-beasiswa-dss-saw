@@ -48,10 +48,10 @@
 											<tr>
                         <?php foreach($beasiswa as $key => $val): ?>
 	                        <?php foreach($data[$key] as $v): ?>
-															<td><?=$v?></td>
+															<td><?=number_format($v, 8)?></td>
 													<?php endforeach ?>
 												<?php endforeach ?>
-												<td><?=$max?></td>
+												<td><?=number_format($max, 8)?></td>
 											</tr>
 		                </tbody>
 		            </table>
