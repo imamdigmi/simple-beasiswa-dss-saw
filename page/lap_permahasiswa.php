@@ -29,7 +29,7 @@
 										<?php $query = $connection->query("SELECT DISTINCT(p.kd_beasiswa), k.nama, n.nilai FROM nilai n JOIN penilaian p USING(kd_kriteria) JOIN kriteria k USING(kd_kriteria) WHERE n.nim=$_POST[mhs] AND n.kd_beasiswa=1"); while ($r = $query->fetch_assoc()): ?>
 											<tr>
 												<th><?=$r["nama"]?></th>
-												<td>: <?=$r["nilai"]?></td>
+												<td>: <?=number_format($r["nilai"], 8)?></td>
 											</tr>
 										<?php endwhile; ?>
 									</tbody>
