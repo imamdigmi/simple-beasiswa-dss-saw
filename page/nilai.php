@@ -62,11 +62,23 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 									</div>
 									<div class="form-group">
 	                  <label for="kd_kriteria">Kriteria</label>
-										<select class="form-control" name="kd_kriteria" id="kriteria"></select>
+										<select class="form-control" name="kd_kriteria" id="kriteria">
+											<option>---</option>
+											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
+											<?php while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ? "" : (($row["kd_kriteria"] != $data["kd_kriteria"]) ? "" : 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php endwhile; ?>
+										</select>
 									</div>
 	                <div class="form-group">
 		                  <label for="nilai">Nilai</label>
-											<select class="form-control" name="nilai" id="nilai"></select>
+											<select class="form-control" name="nilai" id="nilai">
+											<option>---</option>
+											<?php $sql = $connection->query("SELECT * FROM penilaian") ?>
+											<?php while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_penilaian"]?>" <?= (!$update) ? "" : (($row["kd_penilaian"] != $data["kd_penilaian"]) ? "" : 'selected="on"') ?>><?=$data["keterangan"]?></option>
+											<?php endwhile; ?>
+											</select>
 	                </div>
 	                <button type="submit" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
 	                <?php if ($update): ?>
