@@ -13,6 +13,7 @@ if (!isset($_SESSION["is_logged"])) {
     <title>Beasiswa</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.chained.min.js"></script>
     <style>
         body {
             margin-top: 40px;

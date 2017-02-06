@@ -9,3 +9,11 @@ git clone https://github.com/imamdigmi/simple-dss-beasiswa-saw.git
 3. Import database.sql
 4. Ubah Username dan Password pada file config.php
 5. Lalu browse ke ``localhost/simple-dss-beasiswa-saw`` di browser
+
+### Kode Warna
+1. Merah      = danger
+2. Kuning     = yellow
+3. Hijau      = success
+4. Biru       = primary
+5. Putih      = default
+6. Biru Muda  = info

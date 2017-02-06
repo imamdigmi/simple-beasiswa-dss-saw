@@ -1,7 +1,7 @@
 <?php
 $update = (isset($_GET['action']) AND $_GET['action'] == 'update') ? true : false;
 if ($update) {
-	$sql = $connection->query("SELECT * FROM nilai WHERE kd_nilai='$_GET[key]'");
+	$sql = $connection->query("SELECT * FROM nilai JOIN penilaian USING(kd_kriteria) WHERE kd_nilai='$_GET[key]'");
 	$row = $sql->fetch_assoc();
 }
 
@@ -44,9 +44,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 										<label for="nim">Mahasiswa</label>
 										<select class="form-control" name="nim">
 											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM mahasiswa") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["nim"]?>" <?= (!$update) ? "" : (($row["nim"] != $data["nim"]) ? "" : 'selected="on"') ?>><?=$data["nim"]?> | <?=$data["nama"]?></option>
+											<?php $sql = $connection->query("SELECT * FROM mahasiswa"); while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["nim"]?>" <?= (!$update) ? "" : (($row["nim"] != $data["nim"]) ? "" : 'selected="selected"') ?>><?=$data["nim"]?> | <?=$data["nama"]?></option>
 											<?php endwhile; ?>
 										</select>
 									</div>
@@ -54,9 +53,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                  <label for="kd_beasiswa">Beasiswa</label>
 										<select class="form-control" name="kd_beasiswa" id="beasiswa">
 											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM beasiswa") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["kd_beasiswa"]?>" <?= (!$update) ? "" : (($row["kd_beasiswa"] != $data["kd_beasiswa"]) ? "" : 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php $sql = $connection->query("SELECT * FROM beasiswa"); while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_beasiswa"]?>"<?= (!$update) ? "" : (($row["kd_beasiswa"] != $data["kd_beasiswa"]) ? "" : 'selected="selected"') ?>><?=$data["nama"]?></option>
 											<?php endwhile; ?>
 										</select>
 									</div>
@@ -64,9 +62,8 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	                  <label for="kd_kriteria">Kriteria</label>
 										<select class="form-control" name="kd_kriteria" id="kriteria">
 											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ? "" : (($row["kd_kriteria"] != $data["kd_kriteria"]) ? "" : 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php $sql = $connection->query("SELECT * FROM kriteria"); while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_kriteria"]?>" class="<?=$data["kd_beasiswa"]?>"<?= (!$update) ? "" : (($row["kd_kriteria"] != $data["kd_kriteria"]) ? "" : ' selected="selected"') ?>><?=$data["nama"]?></option>
 											<?php endwhile; ?>
 										</select>
 									</div>
@@ -74,13 +71,12 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 		                  <label for="nilai">Nilai</label>
 											<select class="form-control" name="nilai" id="nilai">
 											<option>---</option>
-											<?php $sql = $connection->query("SELECT * FROM penilaian") ?>
-											<?php while ($data = $sql->fetch_assoc()): ?>
-												<option value="<?=$data["kd_penilaian"]?>" <?= (!$update) ? "" : (($row["kd_penilaian"] != $data["kd_penilaian"]) ? "" : 'selected="on"') ?>><?=$data["keterangan"]?></option>
+											<?php $sql = $connection->query("SELECT * FROM penilaian"); while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["bobot"]?>" class="<?=$data["kd_kriteria"]?>"<?= (!$update) ? "" : (($row["kd_penilaian"] != $data["kd_penilaian"]) ? "" : ' selected="selected"') ?>><?=$data["keterangan"]?></option>
 											<?php endwhile; ?>
 											</select>
 	                </div>
-	                <button type="submit" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
+	                <button type="submit" id="simpan" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
 	                <?php if ($update): ?>
 										<a href="?page=nilai" class="btn btn-info btn-block">Batal</a>
 									<?php endif; ?>
@@ -131,29 +127,6 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	</div>
 </div>
 <script type="text/javascript">
-$(function() {
-	$("#beasiswa").change(function() {
-		if ($(this).val() != 0) {
-			$.get("ajax.php?get=kriteria&beasiswa="+$(this).val(), function(kriteria){
-					var html = "<option>---</option>";
-					for(var i=0; i<kriteria.length; i++){
-							html += "<option value='"+kriteria[i].kd_kriteria+"'>"+kriteria[i].nama+"</option>";
-					}
-					$("#kriteria").html(html);
-			},"json");
-		}
-	});
-	$("#kriteria").change(function() {
-		if ($(this).val() != 0) {
-			var beasiswa = $('select[name=kd_beasiswa]').val();
-			$.get("ajax.php?get=nilai&beasiswa="+beasiswa+"&kriteria="+$(this).val(), function(nilai){
-					var html = "<option>---</option>";
-					for(var i=0; i<nilai.length; i++){
-							html += "<option value='"+nilai[i].bobot+"'>"+nilai[i].keterangan+"</option>";
-					}
-					$("#nilai").html(html);
-			},"json");
-		}
-	});
-});
+$("#kriteria").chained("#beasiswa");
+$("#nilai").chained("#kriteria");
 </script>
