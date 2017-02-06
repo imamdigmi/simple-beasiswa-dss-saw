@@ -36,8 +36,8 @@ if (empty($_SESSION)) {
 			                    <tr>
 			                        <th>No</th>
 			                        <th>NIM</th>
-															<th>Nama</th>
-															<th>Beasiswa</th>
+            									<th>Nama</th>
+            									<th>Beasiswa</th>
 			                        <th>Nilai</th>
 			                        <th>Tahun</th>
 			                        <th></th>
@@ -49,8 +49,8 @@ if (empty($_SESSION)) {
 			                        <?php while($row = $query->fetch_assoc()): ?>
 			                        <tr>
 			                            <td><?=$no++?></td>
-																	<td><?=$row["nim"]?></td>
-																	<td><?=$row["nama"]?></td>
+              										<td><?=$row["nim"]?></td>
+              										<td><?=$row["nama"]?></td>
 			                            <td><?=$row["beasiswa"]?></td>
 			                            <td><?=number_format((float) $row["nilai"], 8, '.', '')?></td>
 			                            <td><?=$row['tahun']?></td>

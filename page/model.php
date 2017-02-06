@@ -52,7 +52,13 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 									</div>
 									<div class="form-group">
 	                  <label for="kd_kriteria">Kriteria</label>
-										<select class="form-control" name="kd_kriteria" id="kriteria"></select>
+										<select class="form-control" name="kd_kriteria" id="kriteria">
+											<option>---</option>
+											<?php $sql = $connection->query("SELECT * FROM kriteria") ?>
+											<?php while ($data = $sql->fetch_assoc()): ?>
+												<option value="<?=$data["kd_kriteria"]?>" <?= (!$update) ?: (($row["kd_kriteria"] != $data["kd_kriteria"]) ?: 'selected="on"') ?>><?=$data["nama"]?></option>
+											<?php endwhile; ?>
+										</select>
 									</div>
 	                <div class="form-group">
 	                    <label for="bobot">Bobot</label>

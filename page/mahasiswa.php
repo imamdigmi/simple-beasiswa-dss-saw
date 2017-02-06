@@ -70,7 +70,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 	</div>
 	<div class="col-md-8">
 	    <div class="panel panel-info">
-	        <div class="panel-heading"><h3 class="text-center">DAFTAR</h3></div>
+	        <div class="panel-heading"><h3 class="text-center">DAFTAR MAHASISWA</h3></div>
 	        <div class="panel-body">
 	            <table class="table table-condensed">
 	                <thead>
