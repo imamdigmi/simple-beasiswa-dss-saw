@@ -4,6 +4,7 @@
  * Database connection setup
  */
 if (!$connection = new Mysqli("localhost", "root", "idiot", "beasiswa")) {
+if (!$connection = new Mysqli("mysql.idhostinger.com", "u129781860_bea", "u129781860_bea", "u129781860_bea")) {
   echo "<h3>ERROR: Koneksi database gagal!</h3>";
 }
 
