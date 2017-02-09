@@ -88,7 +88,7 @@ if (isset($_GET['action']) AND $_GET['action'] == 'delete') {
 										<?php endwhile; ?>
 										<input type="hidden" name="save" value="true">
 									<?php endif; ?>
-	                <button type="submit" id="simpan" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block">Simpan</button>
+	                <button type="submit" id="simpan" class="btn btn-<?= ($update) ? "warning" : "info" ?> btn-block"><?=($_POST) ? "Simpan" : "Tampilkan"?></button>
 	                <?php if ($update): ?>
 										<a href="?page=nilai" class="btn btn-info btn-block">Batal</a>
 									<?php endif; ?>
