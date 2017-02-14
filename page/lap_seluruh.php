@@ -14,12 +14,16 @@
 	            <?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
 				<?php
 				$q = $connection->query("SELECT b.kd_beasiswa, b.nama, h.nilai, m.nama AS mahasiswa, m.nim, (SELECT MAX(nilai) FROM hasil WHERE nim=h.nim) AS nilai_max FROM mahasiswa m JOIN hasil h ON m.nim=h.nim JOIN beasiswa b ON b.kd_beasiswa=h.kd_beasiswa WHERE m.tahun_mengajukan='$_POST[tahun]'");
-				$beasiswa = []; $data = [];
+				$beasiswa = []; $data = []; $d = [];
 				while ($r = $q->fetch_assoc()) {
 					$beasiswa[$r["kd_beasiswa"]] = $r["nama"];
-					$s = $connection->query("SELECT b.nama, MAX(nilai) FROM hasil h JOIN beasiswa b USING(kd_beasiswa) WHERE h.nim=$r[nim]");
-					$a = $s->fetch_assoc();
-					$data[$r["nim"]."-".$r["mahasiswa"]."-".$r["nilai_max"]."-".$a["nama"]][$r["kd_beasiswa"]] = $r["nilai"];
+					$s = $connection->query("SELECT b.nama, a.nilai FROM hasil a JOIN beasiswa b USING(kd_beasiswa) WHERE a.nim=$r[nim] AND a.tahun=$_POST[tahun]");
+					while ($rr = $s->fetch_assoc()){
+						$d[$rr['nama']] = $rr['nilai'];
+					}
+					$m = max($d);
+					$k = array_search($m, $d);
+					$data[$r["nim"]."-".$r["mahasiswa"]."-".$r["nilai_max"]."-".$k][$r["kd_beasiswa"]] = $r["nilai"];
 				}
 				?>
 				<hr>
