@@ -53,32 +53,32 @@
 	          <table class="table table-condensed table-hover">
 	              <thead>
 	                  <tr>
-												<th>NIM</th>
-												<th>Nama</th>
-												<?php $query = $connection->query("SELECT nama FROM kriteria WHERE kd_beasiswa=$_GET[beasiswa]"); while($row = $query->fetch_assoc()): ?>
-													<th><?=$row["nama"]?></th>
-												<?php endwhile ?>
-												<th>Nilai</th>
+							<th>NIM</th>
+							<th>Nama</th>
+							<?php //$query = $connection->query("SELECT nama FROM kriteria WHERE kd_beasiswa=$_GET[beasiswa]"); while($row = $query->fetch_assoc()): ?>
+								<!-- <th><?//=$row["nama"]?></th> -->
+							<?php //endwhile ?>
+							<th>Nilai</th>
 	                  </tr>
 	              </thead>
 	              <tbody>
-	                  <?php $query = $connection->query($sql); while($row = $query->fetch_assoc()): ?>
-										<?php
-										$rangking = number_format((float) $row["rangking"], 8, '.', '');
-										$q = $connection->query("SELECT nim FROM hasil WHERE nim='$row[nim]' AND kd_beasiswa='$_GET[beasiswa]' AND tahun='$row[tahun]'");
-										if (!$q->num_rows) {
-											$connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '".$rangking."', '$row[tahun]')");
-										}
-										?>
-	                  <tr>
-	                      <td><?=$row["nim"]?></td>
-	                      <td><?=$row["nama"]?></td>
-														<?php for($i=0; $i<count($namaKriteria); $i++): ?>
-															<th><?=number_format((float) $row[$namaKriteria[$i]], 8, '.', '');?></th>
-														<?php endfor ?>
-	                      <td><?=$rangking?></td>
-	                  </tr>
-									<?php endwhile;?>
+					<?php $query = $connection->query($sql); while($row = $query->fetch_assoc()): ?>
+					<?php
+					$rangking = number_format((float) $row["rangking"], 8, '.', '');
+					$q = $connection->query("SELECT nim FROM hasil WHERE nim='$row[nim]' AND kd_beasiswa='$_GET[beasiswa]' AND tahun='$row[tahun]'");
+					if (!$q->num_rows) {
+					$connection->query("INSERT INTO hasil VALUES(NULL, '$_GET[beasiswa]', '$row[nim]', '".$rangking."', '$row[tahun]')");
+					}
+					?>
+					<tr>
+						<td><?=$row["nim"]?></td>
+						<td><?=$row["nama"]?></td>
+						<?php for($i=0; $i<count($namaKriteria); $i++): ?>
+						<!-- <th><?//=number_format((float) $row[$namaKriteria[$i]], 8, '.', '');?></th> -->
+						<?php endfor ?>
+						<td><?=$rangking?></td>
+					</tr>
+					<?php endwhile;?>
 	              </tbody>
 	          </table>
 	      </div>
